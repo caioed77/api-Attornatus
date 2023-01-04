@@ -4,6 +4,7 @@ package com.listpeople.testePratico.Controllers;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,15 @@ public class PessoaController {
     @ResponseStatus(HttpStatus.CREATED)
     public Pessoa adicionarPessoa(@RequestBody Pessoa pessoa) {
         return pessoaService.criarPessoas(pessoa);
+    }
+
+    @PutMapping(value = "/{codigo}")
+    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
+    public ResponseEntity<Pessoa> atualizarPessoa(
+            @PathVariable Long codigo,
+            @RequestBody Pessoa obj) {
+        obj = pessoaService.alterarPessoa(codigo, obj);
+        return ResponseEntity.ok().body(obj);
+
     }
 }
