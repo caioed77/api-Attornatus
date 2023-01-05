@@ -1,4 +1,4 @@
-package com.listpeople.testePratico.Controllers;
+package com.listpeople.testePratico.controllers;
 
 import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.service.EnderecoService;
