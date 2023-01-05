@@ -20,7 +20,6 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-
     public List<Pessoa> listarPessoas(){
         var lista = pessoaRepository.findAll();
         return lista;
@@ -51,10 +50,6 @@ public class PessoaService {
         entity.setNome(obj.getNome());
         entity.setDataNascimento(obj.getDataNascimento());
         entity.setEndereco(obj.getEndereco());
-    }
-
-    public Pessoa AdicionarEndereco(Integer pessoa_id, Integer endereco_id){
-        return pessoaRepository.PreencherTBPessoaEndereco(pessoa_id, endereco_id);
     }
 
 }
