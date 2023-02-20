@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping(value = "/enderecos")
 public class EnderecoController {
 
-    @Autowired
     private EnderecoService enderecoService;
+
+    public EnderecoController(EnderecoService enderecoService){
+        this.enderecoService = enderecoService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Endereco>> listarTodosEnderecos(){
