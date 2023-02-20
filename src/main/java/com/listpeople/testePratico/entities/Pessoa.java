@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 @Entity
