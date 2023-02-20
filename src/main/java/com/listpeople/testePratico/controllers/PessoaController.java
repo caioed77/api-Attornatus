@@ -1,4 +1,4 @@
-package com.listpeople.testePratico.Controllers;
+package com.listpeople.testePratico.controllers;
 
 
 import com.listpeople.testePratico.entities.DTO.PessoaDTO;
@@ -35,7 +35,6 @@ public class PessoaController {
     }
 
     @PutMapping(value = "/{codigo}")
-    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
     public ResponseEntity<Pessoa> atualizarPessoa(
             @PathVariable Long codigo,
             @RequestBody Pessoa obj) {

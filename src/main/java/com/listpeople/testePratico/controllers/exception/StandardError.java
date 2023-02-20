@@ -1,4 +1,4 @@
-package com.listpeople.testePratico.Controllers.exception;
+package com.listpeople.testePratico.controllers.exception;
 
 
 import lombok.AllArgsConstructor;

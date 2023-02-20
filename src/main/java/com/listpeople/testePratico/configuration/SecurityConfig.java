@@ -1,4 +1,4 @@
-package com.listpeople.testePratico.Configuration;
+package com.listpeople.testePratico.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
