@@ -1,10 +1,10 @@
 package com.listpeople.testePratico.Controllers;
 
 
+import com.listpeople.testePratico.entities.DTO.PessoaDTO;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +19,13 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> listarTodasPessoas(){
+    public ResponseEntity<List<PessoaDTO>> listarTodasPessoas(){
         return ResponseEntity.ok(pessoaService.listarPessoas());
     }
 
     @GetMapping(value = "/{codigo}")
-    public ResponseEntity<Pessoa> PessoaPorCodigo(@PathVariable Long codigo){
-        return ResponseEntity.ok(pessoaService.BuscarPorCodigo(codigo));
+    public ResponseEntity<PessoaDTO> PessoaPorCodigo(@PathVariable Long codigo){
+        return ResponseEntity.ok().body(pessoaService.BuscarPorCodigo(codigo));
     }
     
     @PostMapping

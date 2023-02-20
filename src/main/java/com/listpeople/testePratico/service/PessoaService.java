@@ -1,5 +1,8 @@
 package com.listpeople.testePratico.service;
 
+import com.listpeople.testePratico.entities.DTO.EnderecoDTO;
+import com.listpeople.testePratico.entities.DTO.PessoaDTO;
+import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.exception.ObjectNotFoundException;
 import com.listpeople.testePratico.exception.ResouceNotFoundException;
@@ -13,26 +16,59 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PessoaService {
 
-    @Autowired
     private PessoaRepository pessoaRepository;
 
-    public List<Pessoa> listarPessoas(){
-        var lista = pessoaRepository.findAll();
-        return lista;
+    public PessoaService(PessoaRepository pessoaRepository){
+        this.pessoaRepository = pessoaRepository;
     }
+
+    public List<PessoaDTO> listarPessoas(){
+        List<Pessoa> pessoaList = pessoaRepository.findAll();
+        return pessoaList.stream().map(x -> PessoaDTO.builder()
+                        .codigo(x.getCodigo())
+                        .nome(x.getNome())
+                        .dataNascimento(x.getDataNascimento())
+                        .endereco(x.getEndereco().stream().map(item -> EnderecoDTO.builder()
+                                .id(item.getId())
+                                .cidade(item.getCidade())
+                                .logradouro(item.getLogradouro())
+                                .numero(item.getNumero())
+                                .cep(item.getCep())
+                                .build()).collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 
     @Transactional
     public Pessoa criarPessoas(Pessoa pessoa){
         return pessoaRepository.save(pessoa);
     }
 
-    public Pessoa BuscarPorCodigo(Long codigo){
-        Optional<Pessoa> pessoa = pessoaRepository.findById(codigo);
-        return pessoa.orElseThrow(() -> new ObjectNotFoundException("Codigo de usuario não encontrado"));
+    public PessoaDTO BuscarPorCodigo(Long codigo){
+        Optional<Pessoa> pessoaId = pessoaRepository.findById(codigo);
+        if (pessoaId.isPresent()){
+            Pessoa pessoa = pessoaId.get();
+            return PessoaDTO.builder()
+                    .codigo(pessoa.getCodigo())
+                    .nome(pessoa.getNome())
+                    .dataNascimento(pessoa.getDataNascimento())
+                    .endereco(pessoa.getEndereco().stream().map(endereco -> new EnderecoDTO(
+                            endereco.getId(),
+                            endereco.getLogradouro(),
+                            endereco.getCep(),
+                            endereco.getNumero(),
+                            endereco.getCidade()))
+                    .collect(Collectors.toList())).build();
+
+        } else {
+            throw new ObjectNotFoundException("Codigo da pessoa não encontrado");
+        }
 
     }
 
@@ -46,6 +82,8 @@ public class PessoaService {
             throw new ResouceNotFoundException(codigo);
         }
     }
+
+    @Transactional
     private void updateData(Pessoa entity, Pessoa obj){
         entity.setNome(obj.getNome());
         entity.setDataNascimento(obj.getDataNascimento());
