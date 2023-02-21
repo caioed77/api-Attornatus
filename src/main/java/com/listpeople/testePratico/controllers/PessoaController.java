@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping(value = "/pessoas")
 public class PessoaController {
 
-    @Autowired
     private PessoaService pessoaService;
+
+    public PessoaController(PessoaService pessoaService){
+        this.pessoaService = pessoaService;
+    }
 
     @GetMapping
     public ResponseEntity<List<PessoaDTO>> listarTodasPessoas(){
@@ -42,4 +45,5 @@ public class PessoaController {
         return ResponseEntity.ok().body(obj);
 
     }
+
 }

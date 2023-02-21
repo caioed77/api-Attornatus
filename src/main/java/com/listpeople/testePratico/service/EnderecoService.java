@@ -11,8 +11,11 @@ import java.util.List;
 @Service
 public class EnderecoService {
 
-    @Autowired
     private EnderecoRepository enderecoRepository;
+
+    public EnderecoService(EnderecoRepository enderecoRepository){
+        this.enderecoRepository = enderecoRepository;
+    }
 
     public List<Endereco> listarEnderecos(){
         var listaEndereco = enderecoRepository.findAll();

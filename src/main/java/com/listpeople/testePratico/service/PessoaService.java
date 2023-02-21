@@ -2,12 +2,11 @@ package com.listpeople.testePratico.service;
 
 import com.listpeople.testePratico.entities.DTO.EnderecoDTO;
 import com.listpeople.testePratico.entities.DTO.PessoaDTO;
-import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.exception.ObjectNotFoundException;
 import com.listpeople.testePratico.exception.ResouceNotFoundException;
+import com.listpeople.testePratico.repository.EnderecoRepository;
 import com.listpeople.testePratico.repository.PessoaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -23,8 +22,11 @@ public class PessoaService {
 
     private PessoaRepository pessoaRepository;
 
-    public PessoaService(PessoaRepository pessoaRepository){
+    private EnderecoRepository enderecoRepository;
+
+    public PessoaService(PessoaRepository pessoaRepository, EnderecoRepository enderecoRepository){
         this.pessoaRepository = pessoaRepository;
+        this.enderecoRepository =enderecoRepository;
     }
 
     public List<PessoaDTO> listarPessoas(){
@@ -82,6 +84,7 @@ public class PessoaService {
             throw new ResouceNotFoundException(codigo);
         }
     }
+
 
     @Transactional
     private void updateData(Pessoa entity, Pessoa obj){
