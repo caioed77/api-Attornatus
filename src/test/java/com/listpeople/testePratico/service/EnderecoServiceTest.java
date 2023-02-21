@@ -28,7 +28,7 @@ public class EnderecoServiceTest {
                 .logradouro("casa")
                 .numero(368)
                 .build();
-        
+
         Assertions.assertThat(endereco.getId()).isNotNull();
         Assertions.assertThat(endereco.getCep()).isEqualTo("35533079");
         Assertions.assertThat(endereco.getLogradouro()).isEqualTo("casa");
