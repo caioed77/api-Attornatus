@@ -2,6 +2,7 @@ package com.listpeople.testePratico.service;
 
 import com.listpeople.testePratico.entities.DTO.EnderecoDTO;
 import com.listpeople.testePratico.entities.DTO.PessoaDTO;
+import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.exception.ObjectNotFoundException;
 import com.listpeople.testePratico.exception.ResouceNotFoundException;
@@ -31,21 +32,8 @@ public class PessoaService {
 
     public List<PessoaDTO> listarPessoas(){
         List<Pessoa> pessoaList = pessoaRepository.findAll();
-        return pessoaList.stream().map(x -> PessoaDTO.builder()
-                        .codigo(x.getCodigo())
-                        .nome(x.getNome())
-                        .dataNascimento(x.getDataNascimento())
-                        .endereco(x.getEndereco().stream().map(item -> EnderecoDTO.builder()
-                                .id(item.getId())
-                                .cidade(item.getCidade())
-                                .logradouro(item.getLogradouro())
-                                .numero(item.getNumero())
-                                .cep(item.getCep())
-                                .build()).collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
+        return pessoaList.stream().map(this::fromPessoaDTO).collect(Collectors.toList());
     }
-
 
     @Transactional
     public Pessoa criarPessoas(Pessoa pessoa){
@@ -91,6 +79,26 @@ public class PessoaService {
         entity.setNome(obj.getNome());
         entity.setDataNascimento(obj.getDataNascimento());
         entity.setEndereco(obj.getEndereco());
+    }
+
+    protected PessoaDTO fromPessoaDTO(Pessoa pessoa){
+        return PessoaDTO.builder()
+                .codigo(pessoa.getCodigo())
+                .nome(pessoa.getNome())
+                .dataNascimento(pessoa.getDataNascimento())
+                .endereco(fromEnderecoDTO(pessoa.getEndereco()))
+                .build();
+    }
+    protected List<EnderecoDTO> fromEnderecoDTO(List<Endereco> enderecosList){
+        return enderecosList.stream().map(endereco -> EnderecoDTO
+                        .builder()
+                        .id(endereco.getId())
+                        .numero(endereco.getNumero())
+                        .cep(endereco.getCep())
+                        .cidade(endereco.getCidade())
+                        .logradouro(endereco.getLogradouro())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }
