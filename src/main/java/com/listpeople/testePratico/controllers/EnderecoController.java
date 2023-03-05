@@ -1,5 +1,6 @@
 package com.listpeople.testePratico.controllers;
 
+import com.listpeople.testePratico.entities.DTO.EnderecoDTO;
 import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.service.EnderecoService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class EnderecoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Endereco>> listarTodosEnderecos(){
+    public ResponseEntity<List<EnderecoDTO>> listarTodosEnderecos(){
         return ResponseEntity.ok(enderecoService.listarEnderecos());
     }
 
