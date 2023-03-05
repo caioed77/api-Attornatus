@@ -18,8 +18,8 @@ public class EnderecoService {
     }
 
     public List<Endereco> listarEnderecos(){
-        var listaEndereco = enderecoRepository.findAll();
-        return listaEndereco;
+        var enderecos = enderecoRepository.listarEnderecos();
+        return enderecos;
     }
 
     @Transactional

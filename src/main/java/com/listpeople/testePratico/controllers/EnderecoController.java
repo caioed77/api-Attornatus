@@ -2,7 +2,6 @@ package com.listpeople.testePratico.controllers;
 
 import com.listpeople.testePratico.entities.Endereco;
 import com.listpeople.testePratico.service.EnderecoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,8 @@ public class EnderecoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Endereco criarNovoEndereco(@RequestBody Endereco endereco){
-        return enderecoService.criarEndereco(endereco);
+    public ResponseEntity<Endereco> criarNovoEndereco(@RequestBody Endereco endereco){
+        return ResponseEntity.ok(enderecoService.criarEndereco(endereco));
     }
 
 }

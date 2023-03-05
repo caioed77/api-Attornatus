@@ -4,7 +4,6 @@ package com.listpeople.testePratico.controllers;
 import com.listpeople.testePratico.entities.DTO.PessoaDTO;
 import com.listpeople.testePratico.entities.Pessoa;
 import com.listpeople.testePratico.service.PessoaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +32,8 @@ public class PessoaController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Pessoa adicionarPessoa(@RequestBody Pessoa pessoa) {
-        return pessoaService.criarPessoas(pessoa);
+    public ResponseEntity<Pessoa> adicionarPessoa(@RequestBody Pessoa pessoa) {
+        return ResponseEntity.ok(pessoaService.criarPessoas(pessoa));
     }
 
     @PutMapping(value = "/{codigo}")
