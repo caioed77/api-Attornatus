@@ -1,11 +1,8 @@
 package com.listpeople.testePratico.entities.DTO;
 
-import com.listpeople.testePratico.entities.Endereco;
-import com.listpeople.testePratico.entities.Pessoa;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
