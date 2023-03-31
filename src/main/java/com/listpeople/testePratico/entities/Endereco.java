@@ -21,9 +21,10 @@ public class Endereco {
     private String cep;
     private Integer numero;
     private String cidade;
+    private Boolean enderecoPrincipal;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "endereco_id")
+    @JoinColumn(name = "cliente_id")
     private Pessoa pessoa;
 
 }

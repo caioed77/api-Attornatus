@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pessoas")
+@RequestMapping(value = "/pessoas/")
 public class PessoaController {
 
     private PessoaService pessoaService;
@@ -20,23 +20,23 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
-    @GetMapping
+    @GetMapping(value = "/listar")
     public ResponseEntity<List<PessoaDTO>> listarTodasPessoas(){
         return ResponseEntity.ok(pessoaService.listarPessoas());
     }
 
-    @GetMapping(value = "/{codigo}")
+    @GetMapping(value = "/codigoPessoa/{codigo}")
     public ResponseEntity<PessoaDTO> PessoaPorCodigo(@PathVariable Long codigo){
         return ResponseEntity.ok().body(pessoaService.BuscarPorCodigo(codigo));
     }
     
-    @PostMapping
+    @PostMapping(value = "/criar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Pessoa> adicionarPessoa(@RequestBody Pessoa pessoa) {
-        return ResponseEntity.ok(pessoaService.criarPessoas(pessoa));
+    public ResponseEntity<Pessoa> adicionarPessoa(@RequestBody PessoaDTO pessoa) {
+        return ResponseEntity.ok(pessoaService.criarPessoa(pessoa));
     }
 
-    @PutMapping(value = "/{codigo}")
+    @PostMapping(value = "/atualizar/{codigo}")
     public ResponseEntity<Pessoa> atualizarPessoa(
             @PathVariable Long codigo,
             @RequestBody Pessoa obj) {
