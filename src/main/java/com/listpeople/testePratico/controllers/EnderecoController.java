@@ -1,8 +1,8 @@
 package com.listpeople.testePratico.controllers;
 
 import com.listpeople.testePratico.entities.DTO.EnderecoDTO;
-import com.listpeople.testePratico.entities.Endereco;
-import com.listpeople.testePratico.service.EnderecoService;
+import com.listpeople.testePratico.entities.Pessoa;
+import com.listpeople.testePratico.service.PessoaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +13,27 @@ import java.util.List;
 @RequestMapping(value = "/enderecos")
 public class EnderecoController {
 
-    private EnderecoService enderecoService;
+    private PessoaService pessoaService;
 
-    public EnderecoController(EnderecoService enderecoService){
-        this.enderecoService = enderecoService;
+    public EnderecoController(PessoaService pessoaService){
+        this.pessoaService = pessoaService;
     }
 
-    @GetMapping
+    @GetMapping(value = "/listar")
     public ResponseEntity<List<EnderecoDTO>> listarTodosEnderecos(){
-        return ResponseEntity.ok(enderecoService.listarEnderecos());
+        return ResponseEntity.ok(pessoaService.listarEnderecos());
     }
 
-    @PostMapping
+    @PostMapping(value = "/novoEndereco")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Endereco> criarNovoEndereco(@RequestBody Endereco endereco){
-        return ResponseEntity.ok(enderecoService.criarEndereco(endereco));
+    public ResponseEntity<Pessoa> criarNovoEndereco(@RequestParam Long codigoEndereco, @RequestBody EnderecoDTO enderecoDTO){
+        return ResponseEntity.ok().body(pessoaService.criarEndereco(codigoEndereco, enderecoDTO));
+    }
+
+    @PostMapping(value = "/enderecoPadrao")
+    public ResponseEntity<?> enderecoPrincipal(@RequestParam Long codigoPessoa, @RequestParam Long codigoEndereco){
+      return ResponseEntity.ok(pessoaService.definirEnderecoPrincipal(codigoPessoa, codigoEndereco));
+
     }
 
 }

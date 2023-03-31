@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class PessoaService {
 
     public PessoaService(PessoaRepository pessoaRepository, EnderecoRepository enderecoRepository){
         this.pessoaRepository = pessoaRepository;
-        this.enderecoRepository =enderecoRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     public List<PessoaDTO> listarPessoas(){
@@ -35,8 +36,13 @@ public class PessoaService {
         return pessoaList.stream().map(this::fromPessoaDTO).collect(Collectors.toList());
     }
 
+
     @Transactional
-    public Pessoa criarPessoas(Pessoa pessoa){
+    public Pessoa criarPessoa(PessoaDTO pessoaDTO) {
+        Pessoa pessoa = new Pessoa();
+        pessoa.setNome(pessoaDTO.getNome());
+        pessoa.setDataNascimento(pessoaDTO.getDataNascimento());
+        pessoa.setEndereco(new ArrayList<>());
         return pessoaRepository.save(pessoa);
     }
 
@@ -100,5 +106,52 @@ public class PessoaService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public Pessoa definirEnderecoPrincipal(Long idPessoa, Long idEndereco) {
+        Pessoa pessoa = pessoaRepository.findById(idPessoa)
+                .orElseThrow(() -> new ResouceNotFoundException("Pessoa não encontrada com o id: " + idPessoa));
+        for (Endereco endereco : pessoa.getEndereco()) {
+            if (endereco.getId().equals(idEndereco)) {
+                endereco.setEnderecoPrincipal(true);
+            } else {
+                endereco.setEnderecoPrincipal(false);
+            }
+        }
+        pessoaRepository.save(pessoa);
+        return pessoa;
+    }
+
+    @Transactional
+    public Pessoa criarEndereco(Long idPessoa, EnderecoDTO enderecoDTO) {
+        Pessoa pessoa = pessoaRepository.findById(idPessoa)
+                .orElseThrow(() -> new ResouceNotFoundException("Pessoa não encontrada com o id: " + idPessoa));
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro(enderecoDTO.getLogradouro());
+        endereco.setCep(enderecoDTO.getCep());
+        endereco.setNumero(enderecoDTO.getNumero());
+        endereco.setCidade(enderecoDTO.getCidade());
+        endereco.setEnderecoPrincipal(false);
+        pessoa.getEndereco().add(endereco);
+        pessoaRepository.save(pessoa);
+        return pessoa;
+    }
+
+
+    public List<EnderecoDTO> listarEnderecos() {
+        var enderecos  = enderecoRepository.listarEnderecos();
+        return enderecos.stream().map(this::fromEndereco).collect(Collectors.toList());
+    }
+
+
+    protected EnderecoDTO fromEndereco(Endereco endereco){
+        return EnderecoDTO.builder()
+                .id(endereco.getId())
+                .numero(endereco.getNumero())
+                .cidade(endereco.getCidade())
+                .logradouro(endereco.getLogradouro())
+                .cep(endereco.getCep()).build();
+    }
+
 
 }
